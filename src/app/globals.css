@@ -54,6 +54,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -86,7 +87,14 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .clip-jigsaw {
+    clip-path: polygon(50% 0%, 100% 0, 100% 100%, 50% 100%, 50% 75%, 0 75%, 0 50%, 50% 50%);
   }
 }
