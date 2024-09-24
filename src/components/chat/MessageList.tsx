@@ -3,33 +3,25 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { messages, USERS } from "@/db/dummy";
 
-
 function MessageList() {
-  const selectedUser = USERS[0]
-  const currentUser = USERS[1]
+  const selectedUser = USERS[0];
+  const currentUser = USERS[1];
 
   return (
     <div className='w-full overflow-y-auto overflow-x-hidden h-full flex flex-col'>
-      {/* This component ensure that an animation is applied when items are added to or removed from the list */}
-    <AnimatePresence>
+      {/* Animation for message list */}
+      <AnimatePresence>
         {messages?.map((message, index) => (
           <motion.div
-            key={index}
+            key={message.id || index} // Use message.id if available, fallback to index
             layout
-            initial={{ opacity: 0, scale: 1, y: 50, x: 0 }}
-            animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-            exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
             transition={{
-              opacity: { duration: 0.1 },
-              layout: {
-                type: "spring",
-                bounce: 0.3,
-                duration: messages.indexOf(message) * 0.05 + 0.2,
-              },
-            }}
-            style={{
-              originX: 0.5,
-              originY: 0.5,
+              opacity: { duration: 0.2 },
+              y: { type: "spring", stiffness: 100, damping: 20 },
+              layout: { duration: 0.5 },
             }}
             className={cn(
               "flex flex-col gap-2 p-4 whitespace-pre-wrap",
@@ -37,6 +29,7 @@ function MessageList() {
             )}
           >
             <div className='flex gap-3 items-center'>
+              {/* Avatar for selected user */}
               {message.senderId === selectedUser?.id && (
                 <Avatar className='flex justify-center items-center'>
                   <AvatarImage
@@ -46,8 +39,12 @@ function MessageList() {
                   />
                 </Avatar>
               )}
+
+              {/* Message content based on type */}
               {message.messageType === "text" ? (
-                <span className='bg-[#454F59] p-4 rounded-md max-w-xs'>{message.content}</span>
+                <span className='bg-[#454F59] p-4 rounded-md max-w-xs'>
+                  {message.content}
+                </span>
               ) : (
                 <img
                   src={message.content}
@@ -56,6 +53,7 @@ function MessageList() {
                 />
               )}
 
+              {/* Avatar for current user */}
               {message.senderId === currentUser?.id && (
                 <Avatar className='flex justify-center items-center'>
                   <AvatarImage
@@ -70,7 +68,7 @@ function MessageList() {
         ))}
       </AnimatePresence>
     </div>
-  )
+  );
 }
 
-export default MessageList
+export default MessageList;
