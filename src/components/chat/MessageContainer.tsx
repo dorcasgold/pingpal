@@ -8,7 +8,7 @@ function MessageContainer() {
     <div className='dark:text-white flex flex-col justify-between w-full h-full'>
 			<ChatTopBar />
 
-			<div className='w-full overflow-y-auto overflow-x-hidden h-full flex flex-col'>
+			<div className='w-full overflow-y-auto overflow-x-hidden h-full flex flex-col '>
 				<MessageList />
 				<ChatBottomBar />
 			</div>
