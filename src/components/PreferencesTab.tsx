@@ -19,9 +19,9 @@ const PreferencesTab = () => {
 		<div className='flex flex-wrap gap-2 px-1 md:px-2'>
 			 <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="dark:bg-[#2B273F] bg-[#282E33] text-white">
           <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all text-white dark:rotate-0 dark:scale-100" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all text-white dark:rotate-0 dark:scale-100 " />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
@@ -40,6 +40,7 @@ const PreferencesTab = () => {
       </DropdownMenuContent>
     </DropdownMenu>
 			<Button
+				className="dark:bg-[#2B273F] bg-[#282E33] text-white"
 				variant={"outline"}
 				size={"icon"}
 				onClick={() => {
@@ -48,9 +49,9 @@ const PreferencesTab = () => {
 				}}
 			>
 				{soundEnabled ? (
-					<Volume2 className='size-[1.2rem] text-muted-foreground' />
+					<Volume2 className='size-[1.2rem] ' />
 				) : (
-					<VolumeX className='size-[1.2rem] text-muted-foreground' />
+					<VolumeX className='size-[1.2rem] ' />
 				)}
 			</Button>
 		</div>

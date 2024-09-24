@@ -1,7 +1,11 @@
+import ChatLayout from '@/components/chat/ChatLayout';
 import PreferencesTab from '@/components/PreferencesTab';
-import React from 'react';
+import { cookies } from "next/headers";
 
 function Home() {
+  const layout = cookies().get("react-resizable-panels:layout"); // Retrieve layout from cookies
+    const defaultLayout = layout ? JSON.parse(layout.value) : undefined; // Parse layout if available
+
   return (
     <main className='relative flex h-screen flex-col items-center justify-center p-4 md:px-24 py-32 gap-4'>
       <PreferencesTab />
@@ -18,6 +22,11 @@ function Home() {
           />
         ))}
       </div>
+
+       {/* Container for ChatLayout */}
+            <div className='z-10 border rounded-lg max-w-5xl w-full min-h-[85vh] text-sm lg:flex text-white'>
+                <ChatLayout defaultLayout={defaultLayout} />
+            </div>
     </main>
   );
 }

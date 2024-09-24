@@ -98,3 +98,20 @@ body {
     clip-path: polygon(50% 0%, 100% 0, 100% 100%, 50% 100%, 50% 75%, 0 75%, 0 50%, 50% 50%);
   }
 }
+
+/* rounded cool looking scrollbar */
+@layer components {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted));
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: hsl(var(--background));
+  }
+}
