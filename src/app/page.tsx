@@ -12,7 +12,8 @@ function Home() {
 
       {/* Jigsaw-like pattern */}
       <div
-        className='absolute top-0 z-[-2] h-screen w-screen grid grid-cols-8 grid-rows-6 gap-2 p-4 bg-[#f0f0f0] dark:bg-[#1a1a1a]'
+        className='absolute top-0 z-[-2] h-screen w-screen grid grid-cols-8 grid-rows-6 gap-2 p-4  dark:bg-[#1a1a1a] 
+        bg-purple-900 bg-clip-padding backdrop-filter backdrop-blur-3xl bg-opacity-50 border'
         aria-hidden='true'
       >
         {[...Array(48)].map((_, i) => (

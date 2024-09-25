@@ -18,8 +18,8 @@ function ChatTopBar() {
 			</div>
 
 			<div className='flex gap-2'>
-				<Info className='text-muted-foreground cursor-pointer hover:text-primary' />
-				<X className='text-muted-foreground cursor-pointer hover:text-primary' />
+				<Info className=' text-white dark:text-muted-foreground cursor-pointer hover:text-primary dark:hover:text-white' />
+				<X className='text-white dark:text-muted-foreground cursor-pointer hover:text-primary dark:hover:text-white' />
 			</div>
 		</div>
   )

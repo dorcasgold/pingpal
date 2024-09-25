@@ -34,7 +34,9 @@ const [isCollapsed, setIsCollapsed] = useState(false);
 	}, []);
 
   return (
-		<ResizablePanelGroup direction='horizontal' className='h-full items-stretch border bg-[#282E33] dark:bg-[#101214] rounded-lg'
+		<ResizablePanelGroup direction='horizontal'
+			className='h-full items-stretch border  dark:bg-[#101214] rounded-lg
+			 bg-purple-950 bg-clip-padding backdrop-filter  backdrop-blur-2xl bg-opacity-60 backdrop-saturate-150 backdrop-contrast-125'
 			onLayout={(sizes: number[]) => {	document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}; `;}} // Save layout size to cookie
 >
       <ResizablePanel

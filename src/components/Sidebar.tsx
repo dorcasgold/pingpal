@@ -67,7 +67,7 @@ function Sidebar({ isCollapsed }: SidebarProps) {
 								"w-full justify-start gap-4 my-1 dark:text-white",
 								// Apply different styling if the user is selected
 								selectedUser?.email === user.email
-									? "dark:bg-[#5E4DB2] dark:text-white dark:hover:bg-[#6E5DC6] bg-[#BFDBF847] hover:bg-[#9BB4CA80]"
+									? "dark:bg-[#5E4DB2] dark:text-white dark:hover:bg-[#6E5DC6] bg-purple-800 bg-opacity-45 hover:bg-[#9BB4CA80]"
 									: "bg-[#C8E1F91A] dark:bg-[#2B273F] hover:bg-[#9BB4CA80] dark:hover:bg-[#352C63]"
 							)}
 						>

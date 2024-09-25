@@ -11,8 +11,8 @@ const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const isPending = false;
   return (
-    <div className='p-2 flex justify-between w-full items-center gap-2'>
-     {!message.trim() && <ImageIcon size={20} className='cursor-pointer text-muted-foreground' />}
+    <div className='p-2 flex justify-between w-full items-center gap-2 text-white'>
+     {!message.trim() && <ImageIcon size={20} className='cursor-pointer text-white dark:text-muted-foreground' />}
       
       <AnimatePresence>
         <motion.div
@@ -33,15 +33,15 @@ const textAreaRef = useRef<HTMLTextAreaElement>(null);
 						autoComplete='off'
 						placeholder='Aa'
 						rows={1}
-						className='w-full border rounded-full flex items-center h-9 resize-none overflow-hidden
-						bg-background min-h-0'
+						className='w-full border text-white rounded-full flex items-center h-9 resize-none overflow-hidden
+						bg-background min-h-0 placeholder:text-white dark:placeholder:text-muted-foreground'
 						value={message}
 						onChange={(e) => {
 							setMessage(e.target.value);
             }}
             ref={textAreaRef}
           />
-          <div className='absolute right-2 bottom-0.5'>
+          <div className='absolute right-2 bottom-0.5 '>
 						<EmojiPicker
 							onChange={(emoji) => {
 								setMessage(message + emoji);
@@ -55,22 +55,22 @@ const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
         {message.trim() ? (
 					<Button
-						className='h-9 w-9 dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0'
+						className='h-9 w-9 dark:bg-muted bg-purple-800 bg-opacity-45 text-white dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0'
 						variant={"ghost"}
 						size={"icon"}
 					>
-						<SendHorizontal size={20} className='text-muted-foreground' />
+						<SendHorizontal size={20}/>
 					</Button>
 				) : (
 					<Button
-						className='h-9 w-9 dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0'
+						className='h-9 w-9 hover:bg-purple-950 bg-purple-800 bg-opacity-45 dark:bg-muted text-white dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0'
 						variant={"ghost"}
 						size={"icon"}
 					>
 						{!isPending && (
 							<ThumbsUp
 								size={20}
-								className='text-muted-foreground'
+								className='text-white dark:text-muted-foreground dark:hover:text-white'
 							/>
 						)}
 						{isPending && <Loader size={20} className='animate-spin' />}

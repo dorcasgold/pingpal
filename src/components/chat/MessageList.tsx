@@ -42,7 +42,7 @@ function MessageList() {
 
               {/* Message content based on type */}
               {message.messageType === "text" ? (
-                <span className='bg-[#454F59] p-4 rounded-md max-w-xs'>
+                <span className='dark:bg-[#454F59] p-4 rounded-md max-w-xs  bg-purple-800 bg-opacity-45 dark:text-white'>
                   {message.content}
                 </span>
               ) : (
