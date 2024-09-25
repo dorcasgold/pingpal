@@ -1,7 +1,13 @@
 import React from 'react';
 import AuthButtons from './AuthButtons';
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { redirect } from 'next/navigation';
 
-function page() {
+const page = async () => {
+const { isAuthenticated } = getKindeServerSession();
+  if (await isAuthenticated()) return redirect("/");
+  
+
   return (
     <main className='flex h-screen w-full'>
   <div className='w-2/4 hidden md:block'>

@@ -1,10 +1,16 @@
 import ChatLayout from '@/components/chat/ChatLayout';
 import PreferencesTab from '@/components/PreferencesTab';
-import { cookies } from "next/headers";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { cookies } from "next/headers"; // Import cookies utility from Next.js
+import { redirect } from "next/navigation";
 
-function Home() {
-  const layout = cookies().get("react-resizable-panels:layout"); // Retrieve layout from cookies
+export default async function Home() {
+    const layout = cookies().get("react-resizable-panels:layout"); // Retrieve layout from cookies
     const defaultLayout = layout ? JSON.parse(layout.value) : undefined; // Parse layout if available
+
+const { isAuthenticated } = getKindeServerSession();
+	if (!(await isAuthenticated())) return redirect("/auth");
+
 
   return (
     <main className='relative flex h-screen flex-col items-center justify-center p-4 md:px-24 py-32 gap-4'>
@@ -31,5 +37,3 @@ function Home() {
     </main>
   );
 }
-
-export default Home;

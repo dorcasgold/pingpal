@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { LogOut, MessageSquareMoreIcon } from "lucide-react";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
 interface SidebarProps {
 	isCollapsed: boolean;
@@ -104,7 +105,9 @@ function Sidebar({ isCollapsed }: SidebarProps) {
 						</div>
 					)}
 					<div className='flex'>
-						<LogOut size={22} cursor={"pointer"} />
+						<LogoutLink>
+								<LogOut size={22} cursor={"pointer"} />
+							</LogoutLink>
 					</div>
 				</div>
 			</div>
