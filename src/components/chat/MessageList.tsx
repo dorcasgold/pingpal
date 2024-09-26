@@ -13,7 +13,7 @@ function MessageList() {
   const { user: currentUser, isLoading: isUserLoading } = useKindeBrowserClient();
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
-  const { data: messages, isLoading } = useQuery({
+  const { data: messages, isMessagesLoading } = useQuery({
 		queryKey: ["messages", selectedUser?.id],
 		queryFn: async () => {
 			if (selectedUser && currentUser) {
@@ -35,18 +35,26 @@ function MessageList() {
       className='w-full overflow-y-auto overflow-x-hidden h-full flex flex-col'>
       {/* Animation for message list */}
       <AnimatePresence>
-        {messages?.map((message, index) => (
+        {!isMessagesLoading && 
+          messages?.map((message, index) => (
           <motion.div
             key={message.id || index} // Use message.id if available, fallback to index
             layout
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{
-              opacity: { duration: 0.2 },
-              y: { type: "spring", stiffness: 100, damping: 20 },
-              layout: { duration: 0.5 },
-            }}
+							initial={{ opacity: 0, scale: 1, y: 50, x: 0 }}
+							animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+							exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
+							transition={{
+								opacity: { duration: 0.1 },
+								layout: {
+									type: "spring",
+									bounce: 0.3,
+									duration: messages.indexOf(message) * 0.05 + 0.2,
+								},
+							}}
+							style={{
+								originX: 0.5,
+								originY: 0.5,
+							}}
             className={cn(
               "flex flex-col gap-2 p-4 whitespace-pre-wrap",
               message.senderId === currentUser?.id ? "items-end" : "items-start"

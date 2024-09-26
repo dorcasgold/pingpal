@@ -4,21 +4,25 @@ import React, { useRef, useState } from 'react'
 import { Textarea } from '../ui/textarea';
 import EmojiPicker from './EmojiPicker';
 import { Button } from '../ui/button';
-import { sendMessageAction } from '@/actions/message.actions';
-import { usePreferences } from '@/store/usePreferences';
-import { useSelectedUser } from '@/store/useSelectedUser';
-import { useMutation } from '@tanstack/react-query';
 import useSound from 'use-sound';
+import { usePreferences } from '@/store/usePreferences';
+import { useMutation } from '@tanstack/react-query';
+import { sendMessageAction } from '@/actions/message.actions';
+import { useSelectedUser } from '@/store/useSelectedUser';
+import { CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
+import Image from 'next/image';
 
 function ChatBottomBar() {
   const [message, setMessage] = useState("");
-const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
+	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const { selectedUser } = useSelectedUser();
 
 	const { soundEnabled } = usePreferences();
 
-const [playSound1] = useSound("/sounds/keystroke1.mp3");
+const [imgUrl, setImgUrl] = useState("");
+
+	const [playSound1] = useSound("/sounds/keystroke1.mp3");
 	const [playSound2] = useSound("/sounds/keystroke2.mp3");
 	const [playSound3] = useSound("/sounds/keystroke3.mp3");
 	const [playSound4] = useSound("/sounds/keystroke4.mp3");
@@ -29,7 +33,7 @@ const playSoundFunctions = [playSound1, playSound2, playSound3, playSound4];
 		const randomIndex = Math.floor(Math.random() * playSoundFunctions.length);
 		soundEnabled && playSoundFunctions[randomIndex]();
 	};
-	
+
 	const { mutate: sendMessage, isPending } = useMutation({
 		mutationFn: sendMessageAction,
 	});
@@ -42,8 +46,8 @@ const playSoundFunctions = [playSound1, playSound2, playSound3, playSound4];
 
 		textAreaRef.current?.focus();
 	};
-	
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+
+const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.key === "Enter" && !e.shiftKey) {
 			e.preventDefault();
 			handleSendMessage();
@@ -56,8 +60,48 @@ const playSoundFunctions = [playSound1, playSound2, playSound3, playSound4];
 	};
 
   return (
-    <div className='p-2 flex justify-between w-full items-center gap-2 text-white'>
-     {!message.trim() && <ImageIcon size={20} className='cursor-pointer text-white dark:text-muted-foreground' />}
+    <div className='p-2 flex justify-between w-full items-center gap-2'>
+			{!message.trim() && (
+				<CldUploadWidget signatureEndpoint={"/api/sign-cloudinary-params"}
+					onSuccess={(result, { widget }) => {
+						setImgUrl((result.info as CloudinaryUploadWidgetInfo).secure_url);
+						widget.close();
+					}}
+				>
+					{({ open }) => {
+						return (
+							<ImageIcon
+								size={20}
+								onClick={() => open()}
+								className='cursor-pointer text-muted-foreground'
+							/>
+						);
+					}}
+				</CldUploadWidget>
+			)}
+
+			<Dialog open={!!imgUrl}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Image Preview</DialogTitle>
+					</DialogHeader>
+					<div className='flex justify-center items-center relative h-96 w-full mx-auto'>
+						<Image src={imgUrl} alt='Image Preview' fill className='object-contain' />
+					</div>
+
+					<DialogFooter>
+						<Button
+							type='submit'
+							onClick={() => {
+								sendMessage({ content: imgUrl, messageType: "image", receiverId: selectedUser?.id! });
+								setImgUrl("");
+							}}
+						>
+							Send
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
       
       <AnimatePresence>
         <motion.div
@@ -78,8 +122,8 @@ const playSoundFunctions = [playSound1, playSound2, playSound3, playSound4];
 						autoComplete='off'
 						placeholder='Aa'
 						rows={1}
-						className='w-full border text-white rounded-full flex items-center h-9 resize-none overflow-hidden
-						bg-background min-h-0 placeholder:text-white dark:placeholder:text-muted-foreground'
+						className='w-full border rounded-full flex items-center h-9 resize-none overflow-hidden
+						bg-background min-h-0'
 						value={message}
 						onKeyDown={handleKeyDown}
 						onChange={(e) => {
@@ -88,7 +132,7 @@ const playSoundFunctions = [playSound1, playSound2, playSound3, playSound4];
             }}
             ref={textAreaRef}
           />
-          <div className='absolute right-2 bottom-0.5 '>
+          <div className='absolute right-2 bottom-0.5'>
 						<EmojiPicker
 							onChange={(emoji) => {
 								setMessage(message + emoji);
@@ -102,27 +146,27 @@ const playSoundFunctions = [playSound1, playSound2, playSound3, playSound4];
 
         {message.trim() ? (
 					<Button
-						className='h-9 w-9 dark:bg-muted bg-purple-800 bg-opacity-45 text-white dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0'
+						className='h-9 w-9 dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0'
 						variant={"ghost"}
 						size={"icon"}
 						onClick={handleSendMessage}
 					>
-						<SendHorizontal size={20}/>
+						<SendHorizontal size={20} className='text-muted-foreground' />
 					</Button>
 				) : (
 					<Button
-						className='h-9 w-9 hover:bg-purple-950 bg-purple-800 bg-opacity-45 dark:bg-muted text-white dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0'
+						className='h-9 w-9 dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0'
 						variant={"ghost"}
 						size={"icon"}
 					>
 						{!isPending && (
 							<ThumbsUp
 								size={20}
-								className='text-white dark:text-muted-foreground dark:hover:text-white'
-							onClick={() => {
+									className='text-muted-foreground'
+									onClick={() => {
 									sendMessage({ content: "👍", messageType: "text", receiverId: selectedUser?.id! });
 								}}
-								/>
+							/>
 						)}
 						{isPending && <Loader size={20} className='animate-spin' />}
 					</Button>
