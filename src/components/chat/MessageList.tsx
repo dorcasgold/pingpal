@@ -1,14 +1,38 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Avatar, AvatarImage } from "../ui/avatar";
-import { messages, USERS } from "@/db/dummy";
+import { useSelectedUser } from "@/store/useSelectedUser";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useQuery } from "@tanstack/react-query";
+import { useRef, useEffect } from "react";
+import { getMessages } from "@/actions/message.actions";
+
 
 function MessageList() {
-  const selectedUser = USERS[0];
-  const currentUser = USERS[1];
+ const { selectedUser } = useSelectedUser();
+  const { user: currentUser, isLoading: isUserLoading } = useKindeBrowserClient();
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
+  const { data: messages, isLoading } = useQuery({
+		queryKey: ["messages", selectedUser?.id],
+		queryFn: async () => {
+			if (selectedUser && currentUser) {
+				return await getMessages(selectedUser?.id, currentUser?.id);
+			}
+		},
+		enabled: !!selectedUser && !!currentUser && !isUserLoading,
+	});
+
+// Scroll to the bottom of the message container when new messages are added
+	useEffect(() => {
+		if (messageContainerRef.current) {
+			messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+		}
+	}, [messages]);
   return (
-    <div className='w-full overflow-y-auto overflow-x-hidden h-full flex flex-col'>
+    <div 
+    ref={messageContainerRef}
+      className='w-full overflow-y-auto overflow-x-hidden h-full flex flex-col'>
       {/* Animation for message list */}
       <AnimatePresence>
         {messages?.map((message, index) => (
@@ -57,7 +81,7 @@ function MessageList() {
               {message.senderId === currentUser?.id && (
                 <Avatar className='flex justify-center items-center'>
                   <AvatarImage
-                    src={currentUser?.image || "/user-placeholder.png"}
+                    src={currentUser?.picture  || "/user-placeholder.png"}
                     alt='User Image'
                     className='border-2 border-white rounded-full'
                   />

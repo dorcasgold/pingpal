@@ -20,7 +20,7 @@ function Sidebar({ isCollapsed, users }: SidebarProps) {
 	const { user } = useKindeBrowserClient();
 const { soundEnabled } = usePreferences();
 	const { setSelectedUser, selectedUser } = useSelectedUser();
-	const [playClickSound] = useSound("/sounds/mouse-click.mp3");
+	const [playClickSound] = useSound("/sounds/click.wav");
 
 	return (
 		<div className='group relative flex flex-col h-full gap-4 p-2 max-h-full overflow-auto bg-background dark:text-white'>
